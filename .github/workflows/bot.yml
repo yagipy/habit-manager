@@ -1,0 +1,16 @@
+name: bot
+on:
+  schedule:
+    - cron: '0 23 * * *'
+  workflow_dispatch:
+
+jobs:
+  gh-issue-diary:
+    runs-on: ubuntu-22.04
+    steps:
+      - uses: actions/checkout@v3
+      - uses: ./.github/actions/bot
+        with:
+          TYPETALK_TOPIC_ID: '${{ secrets.TYPETALK_TOPIC_ID }}'
+          TYPETALK_TOKEN: '${{ secrets.TYPETALK_TOKEN }}'
+          ASSIGN_USER: ny-a

@@ -1,0 +1,60 @@
+name: sechack365-habituation-bot
+description: SecHack365 habituation bot
+
+inputs:
+  github_token:
+    description: 'github token.'
+    default: '${{ github.token }}'
+    required: true
+  repository:
+    description: 'repository name.'
+    default: '${{ github.repository }}'
+    required: true
+  issue_template:
+    description: 'template file for issue.'
+    default: 'template.md'
+  typetalk_topic_id:
+    description: 'TypeTalk topic id.'
+    required: true
+  typetalk_token:
+    description: 'TypeTalk bot token.'
+    required: true
+  assign_user:
+    description: 'username to assign issues.'
+  issue_label:
+    description: 'label name for issue.'
+  target_day_offset:
+    description: 'target day offset in days.'
+    default: '0'
+
+
+runs:
+  using: "composite"
+  steps:
+    - uses: actions/setup-node@v3
+      with:
+        node-version: 18
+    - uses: actions/cache@v3
+      with:
+        path: .github/actions/bot/node_modules
+        key: ${{ runner.os }}-${{ hashFiles('.github/actions/bot/package-lock.json') }}
+    - name: build
+      working-directory: .github/actions/bot
+      shell: bash
+      run: |
+        pwd
+        npm ci
+        npm run build
+    - name: run
+      env:
+        GH_TOKEN: ${{ inputs.github_token }}
+        REPOSITORY: ${{ inputs.repository }}
+        ISSUE_TEMPLATE: ${{ inputs.issue_template }}
+        TYPETALK_TOPIC_ID: ${{ inputs.typetalk_topic_id }}
+        TYPETALK_TOKEN: ${{ inputs.typetalk_token }}
+        ASSIGN_USER: ${{ inputs.assign_user }}
+        ISSUE_LABEL: ${{ inputs.issue_label }}
+        TARGET_DAY_OFFSET: ${{ inputs.target_day_offset }}
+      shell: bash
+      run: |
+        node .github/actions/bot/index.js
