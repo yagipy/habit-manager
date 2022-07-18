@@ -1,0 +1,14 @@
+name: close
+on:
+  issues:
+    types: [closed]
+  workflow_dispatch:
+
+jobs:
+  gh-issue-close:
+    runs-on: ubuntu-22.04
+    env:
+      ISSUE_TITLE: ${{ github.event.issue.title }}
+    steps:
+    - run: |
+        curl -d $'message=${{ env.ISSUE_TITLE }}のタスクが完了しました' -H 'X-TYPETALK-TOKEN: ${{ secrets.TYPETALK_TOKEN }}' https://typetalk.com/api/v1/topics/${{ secrets.TYPETALK_TOPIC_ID }}
