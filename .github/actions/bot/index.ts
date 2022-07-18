@@ -7,7 +7,6 @@ const GH_TOKEN = process.env.GH_TOKEN;
 const dryRun = process.env.DRY_RUN === 'true';
 
 const repository = process.env.REPOSITORY;
-const userName = process.env.ASSIGN_USER;
 const diaryLabel = process.env.ISSUE_LABEL;
 const issueTemplate = process.env.ISSUE_TEMPLATE;
 const typetalkTopicId = process.env.TYPETALK_TOPIC_ID;
@@ -98,7 +97,7 @@ const entrypoint = (async () => {
 
   if (!dryRun) {
     const labels = diaryLabel ? [diaryLabel] : [];
-    const assignees = userName ? [userName] : [];
+    const assignees = repoOwner ? [repoOwner] : [];
 
     const issueOpenResult = await octokit.issues.create({
       owner: repoOwner,

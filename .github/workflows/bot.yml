@@ -13,4 +13,3 @@ jobs:
         with:
           TYPETALK_TOPIC_ID: '${{ secrets.TYPETALK_TOPIC_ID }}'
           TYPETALK_TOKEN: '${{ secrets.TYPETALK_TOKEN }}'
-          ASSIGN_USER: ny-a
